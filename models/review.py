@@ -7,12 +7,6 @@ class ReviewsModel(db.Model):
     Reviews Models
   """ 
     __tablename__ = 'reviews'
-    id
-    reviewed_by <fkey:user-id>
-    date of review <timestamp>
-    photo_evidence <blob>
-    condition <destroyed,existing,good>
-    review_details <text 255>
 
     id = db.Column(db.Integer, primary_key=True)
     reviewed_by = db.Column(db.String(128), nullable=False)
