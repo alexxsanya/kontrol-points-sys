@@ -42,10 +42,10 @@ class ReviewsModel(db.Model):
 
     @staticmethod
     def get_reviews_from_db():
-        return KontrolsModel.query.all()
+        return ReviewsModel.query.all()
     @staticmethod
     def get_one_review(id):
-        return KontrolsModel.query.get(id)
+        return ReviewsModel.query.get(id)
 
     def __repr__(self):
         return '<id {}>'.format(self.id)
