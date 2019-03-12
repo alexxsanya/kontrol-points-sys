@@ -35,7 +35,11 @@
                     {% endfor %} 
                 {% endif %}
             {% endwith %} 
-            {% include 'includes/_create_user.html' %}
+            <div class="container">
+                {% include 'includes/_create_point.html' %}
+                {% include 'includes/_create_user.html' %}
+                {% include 'includes/_create_review.html' %}
+            </div>
         {% endblock %}
 </body>
 </html>
