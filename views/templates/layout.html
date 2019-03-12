@@ -1,0 +1,41 @@
+{% extends "bootstrap/base.html" %}
+<!DOCTYPE html>
+<html>
+{% block head %}
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Control Points</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block styles %}
+        <link rel="stylesheet" href="{{url_for('.static', filename='css/layout.css')}}"> 
+        <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.13.3/dist/bootstrap-table.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />    
+        {{super()}}
+    {% endblock %} 
+    {% block scripts %}
+    {{super()}}
+    <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.1.3/dist/bootstrap-validate.js" ></script>
+    <script src="{{url_for('.static', filename='js/map.js')}}"></script>
+    
+    </script>
+    {% endblock %}
+{% endblock %}
+<body> 
+        {% block body %}
+            {% block navbar %}
+                {% include 'includes/_nav.html' %}
+            {% endblock %} 
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %} 
+                    {% for category,message in messages %}
+                        <div class="flash-status status-{{category}}">
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %} 
+                {% endif %}
+            {% endwith %} 
+            {% include 'includes/_create_user.html' %}
+        {% endblock %}
+</body>
+</html>
