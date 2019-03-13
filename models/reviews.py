@@ -9,18 +9,16 @@ class ReviewsModel(db.Model):
     __tablename__ = 'reviews'
 
     id = db.Column(db.Integer, primary_key=True)
-    reviewed_by = db.Column(db.String(128), nullable=False)
-    review_for = db.Column(db.String(128), nullable=False)
-    kontrol_condition = db.Column(db.String(128), nullable=False)
+    kontrol_condition = db.Column(db.String(50), nullable=False)
     review_details = db.Column(db.Text,nullable=False)
     created_at = db.Column(db.DateTime)
     modified_at = db.Column(db.DateTime)
-
-    reviews = db.relationship('UserModel', backref='reviews', lazy=True)
+    kontrol_id = db.Column(db.Integer(), db.ForeignKey('kontrols.id'))
+    user_id = db.Column(db.Integer(), db.ForeignKey('users.u_id'))
 
     def __init__(self, data): 
-        self.reviewed_by = data.get('reviewed_by') 
-        self.review_for = data.get('review_for') 
+        self.user_id = data.get('reviewed_by') 
+        self.kontrol_id = data.get('review_for') 
         self.kontrol_condition = data.get('kontrol_condition') 
         self.review_details = data.get('review_details') 
         self.created_at = datetime.datetime.utcnow()
@@ -55,9 +53,9 @@ class ReviewsModelSchema(Schema):
     ReviewsModel Schema
     """
     id = fields.Int(dump_only=True)
-    reviewed_by = fields.Str(required=True)
-    review_for = fields.Str(required=True)
     kontrol_condition = fields.Str(required=True)
     review_details = fields.Str(required=True)
     created_at = fields.DateTime(dump_only=True) 
     modified_at = fields.DateTime(dump_only=True) 
+    kontrol_id = fields.Int(dump_only=True)
+    user_id = fields.Int(dump_only=True)
