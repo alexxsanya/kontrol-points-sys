@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}  {% endblock %}
+
+{% block body %}
+{{super()}}
+<br />
+<div class="container">
+        <div class="jumbotron">
+              <h1 class="display-4">{{error.title}}</h1>
+              <p class="lead">{{error.desc}}</p>
+              <hr class="my-4">
+              <p>{{error.tip}}</p>
+              <a class="btn btn-primary btn-lg" href={{error.url}} role="button">{{error.action}}</a>
+        </div>
+  </div> 
+{% endblock %}
+{% block scripts %}
+  {{super()}}
+  <script>
+      window.onload = function(){
+      }  
+  </script>
+{% endblock %}
