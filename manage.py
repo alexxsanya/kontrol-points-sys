@@ -3,9 +3,7 @@ from flask_migrate import Migrate, MigrateCommand
 from models.user import UserModel,UserModelSchema                                       
 from models.reviews import ReviewsModel,ReviewsModelSchema   
 from models.controls import KontrolsModel,KontrolsModelSchema                         
-from views import init_app, db
-
-app = init_app()
+from views import app, db
 
 migrate = Migrate(app=app, db=db)
 
