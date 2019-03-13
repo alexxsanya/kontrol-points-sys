@@ -11,8 +11,8 @@ class UserModel(db.Model):
     u_id = db.Column(db.Integer, primary_key=True)
     u_firstname = db.Column(db.String(30), nullable=False)
     u_lastname = db.Column(db.String(30), nullable=False)
-    u_telephone = db.Column(db.String(15), nullable=False)
-    u_email = db.Column(db.String(35),nullable=False)
+    u_telephone = db.Column(db.String(15), nullable=False, unique=True)
+    u_email = db.Column(db.String(35),nullable=False, unique=True)
     u_password = db.Column(db.String(150), nullable=False)
     u_role = db.Column(db.String(15), default='user')
     created_at = db.Column(db.DateTime)
@@ -49,7 +49,9 @@ class UserModel(db.Model):
     @staticmethod
     def get_one_user(id):
         return UserModel.query.get(id)
-
+    @staticmethod
+    def get_user_by_email(email): 
+        return UserModel.query.filter_by(u_email=email).first()
     def __repr__(self):
         return '<id {}>'.format(self.id)
 
@@ -64,6 +66,6 @@ class UserModelSchema(Schema):
     u_telephone = fields.Str(required=True)
     u_email = fields.Str(required=True)
     u_password = fields.Str(required=True)
-    u_role = fields.Str(required=True)
+    u_role = fields.Str()
     created_at = fields.DateTime(dump_only=True) 
     modified_at = fields.DateTime(dump_only=True) 
