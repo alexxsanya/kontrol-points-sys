@@ -33,7 +33,7 @@ def home():
 @app.route('/create-user', methods=['POST'])
 def create_user():
     req_data = request.form.to_dict(flat=True)
-    
+
     req_data['u_role'] = 'user'
 
     data, error = UserModelSchema().load(req_data)
@@ -53,6 +53,28 @@ def create_user():
     message = "Account Created, Now Login"
     flash(message,'success')        
     return redirect(url_for('home'))
+
+@app.route('/login-user', methods=['POST'])
+def login_user():
+    user = request.form.to_dict(flat=True)  
+
+    user = UserModel.get_user_by_email(user.get('l_email'))    
+    
+    user = UserModelSchema().dump(user).data  
+    
+    if user != {} and '@' in str(user.get('u_email')):
+        session['username'] = user.get('email')
+        session['user_id'] = user.get('id')
+
+        flash('You are successfully logged in','success')
+
+        return redirect(url_for('home'))
+
+    else: 
+
+        flash('Logged in with wrong credentials','error')
+
+        return redirect(url_for('home'))
 
 @app.errorhandler(401)
 def error_401(error):
