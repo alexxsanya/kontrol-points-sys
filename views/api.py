@@ -19,7 +19,7 @@ def init_app():
     bcrypt.init_app(app)
     db.init_app(app) 
     return app
-    
+db = db    
 app = init_app()
 
 @app.route("/")
