@@ -63,8 +63,8 @@ def login_user():
     user = UserModelSchema().dump(user).data  
     
     if user != {} and '@' in str(user.get('u_email')):
-        session['username'] = user.get('email')
-        session['user_id'] = user.get('id')
+        session['username'] = user.get('u_email')
+        session['user_id'] = user.get('u_id')
 
         flash('You are successfully logged in','success')
 
@@ -76,6 +76,32 @@ def login_user():
 
         return redirect(url_for('home'))
 
+@app.route('/create-point',methods=['POST'])
+def create_point():
+    req_data = request.form.to_dict(flat=True)
+
+    req_data['k_utm'] = req_data.get('k_utm_n') + ',' + req_data.get('k_utm_e')\
+        + ',' + req_data.get('k_utm_h')
+
+    req_data['k_geocord'] = req_data.get('k_geo_lat')+ ',' + req_data.get('k_geo_lng')
+
+    data, error = KontrolsModelSchema().load(req_data)
+
+    if error:
+        return json.dumps(error)
+    point_in_db = KontrolsModel.get_kontol_by_name(data.get('u_email'))
+    if point_in_db:
+        message = 'Control Point Already Recorded'
+        flash(message,'error')        
+        return redirect(url_for('home'))
+
+    kpoint = KontrolsModel(data)
+    kpoint.save()
+
+    user_data = KontrolsModelSchema().dump(kpoint).data
+    message = "Control Point has been successfully created"
+    flash(message,'success')        
+    return redirect(url_for('home'))
 @app.errorhandler(401)
 def error_401(error):
     error = {
