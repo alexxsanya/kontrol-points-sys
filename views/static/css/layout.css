@@ -30,3 +30,28 @@ loading{
 .multline-group{
     margin-bottom:0px !important;
 }
+
+.flash-status {
+    position: absolute;
+    left: 30%;
+    top: 10%;
+    padding: 2px;
+    width: 25%;
+    max-width: 70%;
+    text-align: center; 
+    border-radius: 25px;
+    z-index: 400;
+    -webkit-transition-property: display;
+    -webkit-transition-duration: 2s;
+    transition-property: display;
+    transition-duration: 2s;
+    transition-timing-function: ease-in;
+}
+.status-success{
+    color: #2dbf2d;
+    background-color: #ddefd7;
+}
+.status-error{
+    color:rgb(241, 9, 9);
+    background-color: #ee90894d;
+}
