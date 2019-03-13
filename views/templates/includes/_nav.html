@@ -19,13 +19,12 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
                     aria-haspopup="true" aria-expanded="false">
-                    Reports
+                    My Profile
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/reports/charts">Charts</a>
+                    <a class="dropdown-item" href="/points/reviews">My Reviews</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/reports/maps">Map View</a>
-                    <a class="dropdown-item" href="#"></a>
+                    <a class="dropdown-item" href="/user/profile">My Profile</a>
                 </div>
             </li>
             {% endif %}
@@ -34,24 +33,15 @@
         <ul class="navbar-nav">
             {% if not session['username'] %}
             <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#userLoginModal">Login</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#userLoginModal">Login</a>
             </li>
             <li class="nav-item">
-                    <a class="nav-link" href="#" data-toggle="modal" data-target="#userCreateModal">Create Account</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#userCreateModal">Create Account</a>
             </li>
             {% endif %}
             {% if session['username'] %}
-            <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown"> 
-                        <a class="dropdown-item" href="/dashboard">My Dashboard</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" data-toggle="modal" data-target="#exampleModal"  href="#">Report Accident</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/logout">Logout</a>
-                    </div>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout-user" data-target="#userLoginModal">Logout</a>
             </li>
             {% endif %}
         <ul>
