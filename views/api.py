@@ -11,6 +11,9 @@ from models import db, bcrypt
 import config
 from os import environ 
 from flask_bootstrap import Bootstrap
+from models.controls import KontrolsModel,KontrolsModelSchema
+from models.reviews import ReviewsModel,ReviewsModelSchema
+from models.user import UserModel,UserModelSchema
 
 def init_app():
     app = Flask(__name__) 
@@ -27,6 +30,29 @@ def home():
 
     return render_template("home.html")
 
+@app.route('/create-user', methods=['POST'])
+def create_user():
+    req_data = request.form.to_dict(flat=True)
+    
+    req_data['u_role'] = 'user'
+
+    data, error = UserModelSchema().load(req_data)
+
+    if error:
+        return json.dumps(error)
+    user_in_db = UserModel.get_user_by_email(data.get('u_email'))
+    if user_in_db:
+        message = 'User already exist with supplied email address'
+        flash(message,'error')        
+        return redirect(url_for('home'))
+
+    user = UserModel(data)
+    user.save()
+
+    user_data = UserModelSchema().dump(user).data
+    message = "Account Created, Now Login"
+    flash(message,'success')        
+    return redirect(url_for('home'))
 
 @app.errorhandler(401)
 def error_401(error):
