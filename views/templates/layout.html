@@ -15,8 +15,12 @@
     {% block scripts %}
     {{super()}}
     <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.1.3/dist/bootstrap-validate.js" ></script>
-    <script src="{{url_for('.static', filename='js/map.js')}}"></script>
     <script src="{{url_for('.static', filename='js/app.js')}}"></script>
+    <script>
+        window.onload = function(){
+            App();
+        }
+    </script>
     {% endblock %}
 {% endblock %}
 <body> 
