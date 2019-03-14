@@ -61,7 +61,7 @@ def login_user():
     user = UserModel.get_user_by_email(user.get('l_email'))    
     
     user = UserModelSchema().dump(user).data  
-    
+
     if user != {} and '@' in str(user.get('u_email')):
         session['username'] = user.get('u_email')
         session['user_id'] = user.get('u_id')
@@ -75,6 +75,13 @@ def login_user():
         flash('Logged in with wrong credentials','error')
 
         return redirect(url_for('home'))
+
+@app.route('/logout-user')
+def logout_user():
+    session.pop("username",None)
+    session.pop("user_id",None)
+    flash('You are successfully logged out','success')
+    return redirect(url_for('home'))
 
 @app.route('/create-point',methods=['POST'])
 def create_point():
