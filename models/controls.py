@@ -27,7 +27,7 @@ class KontrolsModel(db.Model):
   def __init__(self, data):
     self.k_name = data.get('k_name') 
     self.k_utm = data.get('k_utm') 
-    self.user_id = data.get('k_created_by') 
+    self.user_id = int(data.get('user_id'))
     self.k_geocord = data.get('k_geocord') 
     self.k_addr_district = data.get('k_addr_district') 
     self.k_addr_county = data.get('k_addr_county') 
@@ -84,4 +84,4 @@ class KontrolsModelSchema(Schema):
   k_description = fields.Str(required=True)
   created_at = fields.DateTime(dump_only=True) 
   modified_at = fields.DateTime(dump_only=True) 
-  user_id = fields.Int(dump_only=True)
+  user_id = fields.Int(required=True)
