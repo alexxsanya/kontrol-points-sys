@@ -121,7 +121,7 @@ def get_points(point_name):
     kontrols =  KontrolsModel.get_kontol_by_name(point_name) 
 
     if not kontrols:
-        abort(404) # Using 413 in place of 204 No Content Found
+        return jsonify({}) # Using 413 in place of 204 No Content Found
 
     data = KontrolsModelSchema().dump(kontrols).data 
 
