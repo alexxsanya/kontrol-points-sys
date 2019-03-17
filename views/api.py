@@ -91,7 +91,7 @@ def create_point():
         + ',' + req_data.get('k_utm_h')
 
     req_data['k_geocord'] = req_data.get('k_geo_lat')+ ',' + req_data.get('k_geo_lng')
-
+    req_data['user_id'] = int(req_data.get('k_created_by'))
     data, error = KontrolsModelSchema().load(req_data)
 
     if error:
@@ -109,6 +109,28 @@ def create_point():
     message = "Control Point has been successfully created"
     flash(message,'success')        
     return redirect(url_for('home'))
+
+@app.route('/all-points')
+def get_all_points():
+    kontrols =  KontrolsModel.get_kontrols_from_db() 
+    data = KontrolsModelSchema().dump(kontrols, many=True).data 
+    return jsonify(data)
+
+@app.route('/points/<string:point_name>')
+def get_points(point_name):
+    kontrols =  KontrolsModel.get_kontol_by_name(point_name) 
+
+    if not kontrols:
+        abort(404) # Using 413 in place of 204 No Content Found
+
+    data = KontrolsModelSchema().dump(kontrols).data 
+
+    return jsonify(data)
+
+@app.route('/assets/<img_uri>')
+def get_photo(img_uri): 
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               img_uri)
 @app.errorhandler(401)
 def error_401(error):
     error = {
