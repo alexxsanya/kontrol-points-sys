@@ -15,6 +15,7 @@
     {% block scripts %}
     {{super()}}
     <script src="https://cdn.rawgit.com/PascaleBeier/bootstrap-validate/v2.1.3/dist/bootstrap-validate.js" ></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7g68KcjjZ3nGcT0Jcjo6nWPXfITNVStA&libraries=places&language=EN&region=UG" type="text/javascript"></script>
     <script src="{{url_for('.static', filename='js/app.js')}}"></script>
     <script>
         window.onload = function(){
@@ -43,6 +44,7 @@
                 {% include 'includes/_create_user.html' %}
                 {% include 'includes/_create_review.html' %}
                 {% include 'includes/_login_user.html' %}
+                {% include 'includes/_search_point.html' %}
             </div>
         {% endblock %}
 </body>
