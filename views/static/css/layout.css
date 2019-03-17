@@ -55,3 +55,15 @@ loading{
     color:rgb(241, 9, 9);
     background-color: #ee90894d;
 }
+.modal-content {
+    background-color: rgba(239, 226, 190, 0.74901961) !important;
+}
+.modal-header {
+    border-bottom: 1px solid #f5e8c5 !important;
+}
+.modal-title{
+    color:#fff;
+}
+.modal-footer {
+    border-top: 1px solid #f5e8c5 !important;
+}
