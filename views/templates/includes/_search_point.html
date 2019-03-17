@@ -1,0 +1,29 @@
+<div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="searchModalLabel">Search Control Point</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="POST">
+                <div class="form-group">
+                    <label for="s-k-name" class="col-form-label">Control Point Name :</label>
+                    <input type="text" class="form-control form-control-sm" id="s-k-name" 
+                        placeholder="Enter Control Point Name"  required>
+                </div>           
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="searchPoint()">Locate</button>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div> 
+    
+    <script>
+        bootstrapValidate(['#s-k-name'], 'min:8:Enter at least 8 characters password!')
+    </script> 
