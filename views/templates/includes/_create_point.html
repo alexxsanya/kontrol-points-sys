@@ -96,7 +96,8 @@
     </div> 
 
     <script>
-        bootstrapValidate(['#k-name','#k-description'], 'min:10:Enter at least 10 characters!')
+        bootstrapValidate(['#k-name'], 'min:6:Enter at least 6 characters!')
+        bootstrapValidate(['#k-description'], 'min:15:Enter at least 15 characters!')
         bootstrapValidate(['#k-addr-district','#k-addr-county','#k-addr-subcounty'],'required: Atleast 3 characters acceptable')
         bootstrapValidate(['#k-utm-n','#k-utm-e','#k-utm-h'],'numeric:Only Numbers accepted')
     </script> 
