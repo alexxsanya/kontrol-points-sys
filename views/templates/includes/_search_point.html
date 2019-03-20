@@ -12,7 +12,7 @@
                 <div class="form-group">
                     <label for="s-k-name" class="col-form-label">Control Point Name :</label>
                     <input type="text" class="form-control form-control-sm" id="s-k-name" 
-                        placeholder="Enter Control Point Name"  required>
+                        placeholder="Enter Control Point Name" maxlength="12" required>
                 </div>           
             </div>
             <div class="modal-footer">
@@ -25,5 +25,5 @@
     </div> 
     
     <script>
-        bootstrapValidate(['#s-k-name'], 'min:8:Enter at least 8 characters password!')
+        bootstrapValidate(['#s-k-name'], 'min:8:Enter at least 8 characters control name!')
     </script> 
