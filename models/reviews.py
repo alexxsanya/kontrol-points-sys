@@ -15,6 +15,7 @@ class ReviewsModel(db.Model):
     modified_at = db.Column(db.DateTime)
     kontrol_id = db.Column(db.Integer(), db.ForeignKey('kontrols.id'))
     user_id = db.Column(db.Integer(), db.ForeignKey('users.u_id'))
+    kontrol_foto = db.Column(db.Text,nullable=True)
 
     def __init__(self, data): 
         self.user_id = data.get('reviewed_by') 
@@ -23,6 +24,7 @@ class ReviewsModel(db.Model):
         self.review_details = data.get('review_details') 
         self.created_at = datetime.datetime.utcnow()
         self.modified_at = datetime.datetime.utcnow()
+        self.kontrol_foto = data.get('kontrol_foto')
 
     def save(self):
         db.session.add(self)
@@ -59,3 +61,4 @@ class ReviewsModelSchema(Schema):
     modified_at = fields.DateTime(dump_only=True) 
     kontrol_id = fields.Int(dump_only=True)
     user_id = fields.Int(dump_only=True)
+    kontrol_foto = fields.Str()
