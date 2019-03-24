@@ -157,6 +157,9 @@ function loadControlMap(){
                       "<div style='margin:5px 5px'>"+
                         "<button onclick='get_direction()' data='"+
                             content.k_geocord+"'>Get Direction</button>"+
+                        "&nbsp<button onclick='add_review()' data='"+
+                            content.id+"' user_id='"+
+                            content.user_id+"'>Add a Review</button>"+
                       "</div>"+
                    "</div>"; 
         infowindow.setContent(info); 
@@ -226,3 +229,14 @@ function get_direction(e){
 
 }
 
+function add_review(e){
+  e = e || window.event;
+  var target = e.target || e.srcElement;
+  var kontrol_id =  target.getAttribute('data')  
+  var user_id = target.getAttribute('user_id') 
+
+  localStorage.setItem('kontrol_id',kontrol_id);
+  localStorage.setItem('user_id',user_id);
+
+  $('#reviewModal').modal('show')
+}
