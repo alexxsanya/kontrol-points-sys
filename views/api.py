@@ -4,12 +4,12 @@ from flask import (Flask,
                     redirect, url_for, request, 
                     Response,session,abort,
                     send_from_directory)
-import json 
+import json,os
 from werkzeug import secure_filename
 from flask import Flask
 from models import db, bcrypt
 import config
-from os import environ 
+from os import environ
 from flask_bootstrap import Bootstrap
 from models.controls import KontrolsModel,KontrolsModelSchema
 from models.reviews import ReviewsModel,ReviewsModelSchema
@@ -131,6 +131,33 @@ def get_points(point_name):
 def get_photo(img_uri): 
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                img_uri)
+
+@app.route('/add-review',methods=['POST'])
+def add_review():
+    req_data = request.form.to_dict(flat=True)
+    kontrol_foto = request.files['kontrol_foto']
+    photo_name = kontrol_foto.filename
+    req_data['kontrol_foto'] = photo_name
+    photo_name = secure_filename(photo_name)
+
+    if allowed_photos(photo_name):
+        path = "views/"+os.path.join(app.config['UPLOAD_FOLDER'],photo_name)
+        kontrol_foto.save(path)
+    
+    data, error = ReviewsModelSchema().load(req_data)
+    if error:
+        message = error
+        flash(message,'error')        
+        return redirect(url_for('home'))
+    
+    kpoint_review = ReviewsModel(data)
+    kpoint_review.save()
+
+    user_data = ReviewsModelSchema().dump(kpoint_review).data
+    message = "Your review has been successfully added"
+    flash(message,'success')        
+    return redirect(url_for('home'))
+
 @app.errorhandler(401)
 def error_401(error):
     error = {
@@ -196,3 +223,7 @@ def error_500(error):
         "action":"Contact Support Team"
     }
     return render_template("error.html",**locals())
+
+def allowed_photos(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in config.Config.ALLOWED_EXTENSIONS
