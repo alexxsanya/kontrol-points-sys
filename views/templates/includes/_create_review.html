@@ -1,0 +1,60 @@
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="reviewModalModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="reviewModalLabel">Add a Review to this Point</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+        <form action="/add-review" method="POST" enctype="multipart/form-data">
+            {%if session['username'] %}
+            <input type="hidden" value="" name="review_for" id="k-id"/>
+            <input type="hidden" value="" name="reviewed_by" id="k-created-by"/>   
+            <div class="form-group">
+                    <label for="k-detail-review" class="col-form-label">Detailed Review:</label>
+                    <textarea type="text" class="form-control form-control-sm" id="k-detail-review" 
+                        name="review_details" required></textarea>
+            </div>
+            <div class="form-group">
+                <label class="my-1 mr-2" for="inlineFormCustomSelectPref">Control Point Condition</label>
+                <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref"
+                    name="kontrol_condition">
+                  <option value="good" selected>Good</option>
+                  <option value="poor">Poor</option>
+                  <option value="demolished">Demolished</option>
+                </select>  
+            </div>    
+            <div class="form-group">
+                <label for="k-foro" class="col-form-label">Attach Photo Evidence</label>
+                <input type="file" class="form-control form-control-sm" id="k-foto" 
+                    name="kontrol_foto" accept="image/*" required ></textarea>
+            </div>
+            {% endif %}
+            {%if not session['username'] %}
+            <div class="jumbotron">
+                <h1 class="display-4">Not Permitted</h1>
+                <p class="lead">You need to first login to review a control point</p>
+                <hr class="my-4" />
+                <p class="lead">
+                    <a class="btn btn-primary btn-lg" href="#" 
+                        data-toggle="modal" data-target="#userLoginModal" role="button">Login</a>
+                </p>
+            </div>
+            {% endif %}             
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            {%if session['username'] %}
+            <button type="submit" class="btn btn-primary">Add Review</button>
+            {% endif %}
+        </div>
+        </form>
+    </div>
+    </div>
+</div> 
+
+<script>
+    bootstrapValidate(['#k-detail-review'],'min:25: Enter at least 25 characters detail !')
+</script> 

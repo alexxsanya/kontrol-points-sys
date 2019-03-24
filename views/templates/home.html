@@ -64,6 +64,10 @@
   window.onload = function(){
     loadControlMap()
     App()
+    $('#reviewModal').on('shown.bs.modal', function () {
+        $('#k-id').val(localStorage.getItem('kontrol_id'))
+        $('#k-created-by').val(localStorage.getItem('user_id'))
+    })
   }
 </script>
 {% endblock %}
