@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block title %} Home Page {% endblock %}
+
+{% block body %} 
+    {{super()}}
+    <div class="row" style="margin:20px auto;padding:10px;">
+        <div class="col-sm-12" >
+            {%if reviews %} 
+                {% for review in reviews %}
+                <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="/assets/{{review.kontrol_foto}}" 
+                            alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">{{review.kontrol_condition|title}}</h5>
+                            <span>{{review.created_at|truncate(25)}}</span>
+                            <p class="card-text">
+                                {{review.review_details|title|truncate(200)}}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif %}
+            {%if reviews == [] %} 
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                <h1 class="display-4">No Reviews</h1>
+                <p class="lead">Currently this point has not been reviewed</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+            
+    </div>
+        
+{% endblock %}
+{% block scripts %}
+  {{super()}}
+  <script>
+  window.onload = function(){
+    App()
+  }
+</script>
+{% endblock %}
