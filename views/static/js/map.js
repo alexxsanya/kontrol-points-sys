@@ -153,6 +153,7 @@ function loadControlMap(){
                       "<p> <b>Address  </b>   : "+content.k_addr_subcounty+", "+
                         content.k_addr_county+", "+content.k_addr_district+
                       "</p>"+
+                      "<a href='/point/review/"+content.id+"' >see reviews</a>"+
                       "<hr />"+
                       "<div style='margin:5px 5px'>"+
                         "<button onclick='get_direction()' data='"+
