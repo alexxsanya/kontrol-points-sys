@@ -10,8 +10,8 @@
         <div class="modal-body">
         <form action="/add-review" method="POST" enctype="multipart/form-data">
             {%if session['username'] %}
-            <input type="hidden" value="" name="review_for" id="k-id"/>
-            <input type="hidden" value="" name="reviewed_by" id="k-created-by"/>   
+            <input type="hidden" value="" name="kontrol_id" id="k-id"/>
+            <input type="hidden" value="" name="user_id" id="k-created-by"/>   
             <div class="form-group">
                     <label for="k-detail-review" class="col-form-label">Detailed Review:</label>
                     <textarea type="text" class="form-control form-control-sm" id="k-detail-review" 
