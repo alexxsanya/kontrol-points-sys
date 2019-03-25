@@ -18,8 +18,8 @@ class ReviewsModel(db.Model):
     kontrol_foto = db.Column(db.Text,nullable=True)
 
     def __init__(self, data): 
-        self.user_id = data.get('reviewed_by') 
-        self.kontrol_id = data.get('review_for') 
+        self.user_id = data.get('user_id') 
+        self.kontrol_id = data.get('kontrol_id') 
         self.kontrol_condition = data.get('kontrol_condition') 
         self.review_details = data.get('review_details') 
         self.created_at = datetime.datetime.utcnow()
@@ -47,6 +47,10 @@ class ReviewsModel(db.Model):
     def get_one_review(id):
         return ReviewsModel.query.get(id)
 
+    @staticmethod
+    def get_review_of(kontrol_id):
+        return ReviewsModel.query.filter_by(kontrol_id=kontrol_id).all()
+
     def __repr__(self):
         return '<id {}>'.format(self.id)
 
@@ -59,6 +63,6 @@ class ReviewsModelSchema(Schema):
     review_details = fields.Str(required=True)
     created_at = fields.DateTime(dump_only=True) 
     modified_at = fields.DateTime(dump_only=True) 
-    kontrol_id = fields.Int(dump_only=True)
-    user_id = fields.Int(dump_only=True)
+    kontrol_id = fields.Int()
+    user_id = fields.Int()
     kontrol_foto = fields.Str()
