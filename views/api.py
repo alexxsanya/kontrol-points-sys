@@ -158,6 +158,13 @@ def add_review():
     flash(message,'success')        
     return redirect(url_for('home'))
 
+@app.route('/point/review/<int:id>',methods=['GET'])
+def get_point_reviews(id):
+    reviews = ReviewsModel.get_review_of(id)
+    data = ReviewsModelSchema().dump(reviews, many=True).data 
+
+    return render_template("reviews.html",reviews=data)
+
 @app.errorhandler(401)
 def error_401(error):
     error = {
