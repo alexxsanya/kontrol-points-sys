@@ -1,5 +1,6 @@
 var lng = 0;
 var lat = 0;
+var K_Points = []
 if (navigator.geolocation) {
   navigator.geolocation.getCurrentPosition(getPosition);
 
@@ -16,18 +17,10 @@ function loadControlMap(){
     if(lat==0 & lng==0){
         lat= 0.3499986
         lng = 32.56716
-    } 
-    if (navigator.geolocation) {
+        console.log(lat)
         navigator.geolocation.watchPosition(getPosition);
-      
-      } else {
-        alert("Geolocation is not supported by this browser.");
-      }
-      
-      function getPosition(position) {
-        lat = position.coords.latitude;
-        lng = position.coords.longitude; 
-    }
+        console.log(lat)
+    } 
     var style = [
         {
           "featureType": "administrative",
@@ -115,16 +108,30 @@ function loadControlMap(){
       mapTypeId:'roadmap',
       styles:style,
     });
-  
+    
     var marker = new google.maps.Marker({
       position: myCurrentPosition, 
       map: map,
       icon:'/static/assets/user.png'
     });
-  
+ 
+      // Add circle overlay and bind to marker
+    var circle = new google.maps.Circle({
+        map: map,
+        radius: 2*1609.34,    // 2 miles in metres
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.4,
+        strokeWeight: 2,
+        fillColor: '#AA0000',
+        fillOpacity: 0.15,
+    });
+    circle.bindTo('center', marker, 'position');  
+    
+
      $.getJSON('/all-points', function(json1) {
         $.each(json1, function(key, data) {
-            
+            K_Points = json1
+            console.log(K_Points)
             k_geocord = data.k_geocord.split(',')
             console.log(k_geocord)
             var latLng = new google.maps.LatLng(parseFloat(k_geocord[0]), parseFloat(k_geocord[1])); 
@@ -148,7 +155,7 @@ function loadControlMap(){
         var latLng = new google.maps.LatLng(parseFloat(k_geocord[0]),parseFloat(k_geocord[1]));
         destination = new google.maps.LatLng(latLng); 
         var info = "<div style = 'width:250px;min-height:40px'>"+
-                      "<p> <b>Point Name</b>  : "+content.k_name+"</p>"+ 
+                      "<p><a href='/points/"+content.k_name+"' <b>Point Name</b>  : "+content.k_name+"</a></p>"+ 
                       "<p> <b>Description</b> : <br>"+content.k_description+"</p>"+
                       "<p> <b>Address  </b>   : "+content.k_addr_subcounty+", "+
                         content.k_addr_county+", "+content.k_addr_district+
@@ -176,18 +183,10 @@ function calculateRoute(to) {
     if(lat==0 & lng==0){
         lat= 0.3499986
         lng = 32.56716
-    } 
-    if (navigator.geolocation) {
+        console.log(lat)
         navigator.geolocation.watchPosition(getPosition);
-      
-    } else {
-        alert("Geolocation is not supported by this browser.");
-      }
-      
-    function getPosition(position) {
-        lat = position.coords.latitude;
-        lng = position.coords.longitude; 
-    }
+        console.log(lat)
+    }  
     var myCurrentPosition = new google.maps.LatLng(lat, lng);    
     var myOptions = {
       zoom: 13,
@@ -225,7 +224,7 @@ function get_direction(e){
     var target = e.target || e.srcElement;
     var geocord =  target.getAttribute('data')
     geocord = geocord.split(',') 
-    var latLng = new google.maps.LatLng(parseFloat(k_geocord[0]),parseFloat(k_geocord[1]));   
+    var latLng = new google.maps.LatLng(parseFloat(geocord[0]),parseFloat(geocord[1]));   
     calculateRoute(latLng)
 
 }

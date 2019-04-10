@@ -96,7 +96,7 @@ def create_point():
 
     if error:
         return json.dumps(error)
-    point_in_db = KontrolsModel.get_kontol_by_name(data.get('u_email'))
+    point_in_db = KontrolsModel.get_kontol_by_name(req_data.get('k_name'))
     if point_in_db:
         message = 'Control Point Already Recorded'
         flash(message,'error')        
@@ -109,6 +109,35 @@ def create_point():
     message = "Control Point has been successfully created"
     flash(message,'success')        
     return redirect(url_for('home'))
+
+@app.route('/update-point',methods=['POST'])
+def update_point():
+    req_data = request.form.to_dict(flat=True)
+
+    req_data['k_utm'] = req_data.get('k_utm_n') + ',' + req_data.get('k_utm_e')\
+        + ',' + req_data.get('k_utm_h')
+
+    req_data['k_geocord'] = req_data.get('k_geo_lat')+ ',' + req_data.get('k_geo_lng')
+    req_data['user_id'] = int(req_data.get('k_created_by'))
+    data, error = KontrolsModelSchema().load(req_data)
+
+    if error:
+        return json.dumps(error)
+    point_in_db = KontrolsModel.get_kontol_by_name(data.get('k_name'))
+
+    if point_in_db:
+        kpoint = KontrolsModel(data)
+        kpoint.update(data)
+
+        user_data = KontrolsModelSchema().dump(kpoint).data
+        print(user_data)
+        message = "Control Point Updated successfully"
+        flash(message,'success')        
+        return redirect(url_for('get_points',point_name=req_data['k_name']))
+    else:
+        message = 'No Control Point In System With Provided Name'
+        flash(message,'error')        
+        return redirect(url_for('get_points',point_name=req_data['k_name']))
 
 @app.route('/all-points')
 def get_all_points():
@@ -125,7 +154,10 @@ def get_points(point_name):
 
     data = KontrolsModelSchema().dump(kontrols).data 
 
-    return jsonify(data)
+    reviews = ReviewsModel.get_review_of(data.get('id'))
+    review_data = ReviewsModelSchema().dump(reviews, many=True).data 
+    #return jsonify(data)
+    return render_template("point.html",point=data,reviews=review_data)
 
 @app.route('/assets/<img_uri>')
 def get_photo(img_uri): 
@@ -158,7 +190,7 @@ def add_review():
     flash(message,'success')        
     return redirect(url_for('home'))
 
-@app.route('/point/review/<int:id>',methods=['GET'])
+@app.route('/point/reviews/<int:id>',methods=['GET'])
 def get_point_reviews(id):
     reviews = ReviewsModel.get_review_of(id)
     data = ReviewsModelSchema().dump(reviews, many=True).data 

@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='css/route.css')}}">  
+{% endblock %} 
+<body>
+    {% block body %} 
+    {{super()}}
+    <br />
+    <div class="container padding">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <nav class="navbar navbar-light bg-light">                        
+                    <div>
+                        <span class="navbar-text">
+                            Control Point Name <strong>{{point.k_name }}</strong>
+                        </span>
+                    </div>
+                    <form action="#" class="form-inline my-2 my-lg-0">
+                        <button class="btn btn-outline-primary my-2 my-sm-0" data-toggle="modal" data-target="#editPointModal" 
+                            type="button">EDIT</button> &nbsp;
+                    </form>
+                </nav>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+
+            <div class="col-6 col-md-5">
+                
+                <div class="jumbotron">
+                        <h1 class="display-4">{{point.k_name}}</h1>
+                        <p> {{point.k_addr_district}} - 
+                            {{point.k_addr_county}} - 
+                            {{point.k_addr_subcounty}}
+                        </p>
+                        <hr class="my-4">
+                        <p class="lead">{{ point.k_description }} </p>
+                        <hr class="my-4">
+                  </div>
+
+                <div class="row align-items-end">
+                        <div class="col">
+                            <span class="badge badge-secondary">
+                                {{point.k_method_of_fixation}}
+                            </span>
+                            <span class="badge badge-secondary">
+                                {{point.k_equip_used}}
+                            </span> 
+                        </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-7">
+                <h5><u>Control Point Reviews</u></h5>
+                <div class="col-12" style="padding-left: 0px;">  
+                    <div style="height:300px;margin-top:15px;overflow-x: hidden;
+                    overflow-y: auto;">         
+                        <ul class="list-group">
+                            {% for review in reviews %}
+                                <li class="list-group-item">
+                                    <div class="row">
+                                    <div class="col col-1">
+                                        <img src="/assets/{{review.kontrol_foto}}" 
+                                                style="height:32px;width:32px"/>
+                                        {% if review.kontrol_condition == 'good' %}
+                                            <span class="badge badge-primary">
+                                                {{review.kontrol_condition}}
+                                            </span> 
+                                        {% endif %}
+                                        {% if review.kontrol_condition == 'poor' %}
+                                                <span class="badge badge-warning">
+                                                {{review.kontrol_condition}}
+                                            </span> 
+                                            {% endif %}
+                                            {% if review.kontrol_condition == 'demolished' %}
+                                            <span class="badge badge-danger">
+                                                {{review.kontrol_condition}}
+                                            </span> 
+                                            {% endif %}
+                                        </div>
+                                        <div class="col col-9">
+                                            <p>
+                                                {{review.review_details}}
+                                                <br><small>reviewed on : {{review.created_at}}</small>
+                                            </p>
+                                            
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endfor %}
+                        </ul>
+                    </div>     
+                </div>
+    
+            </div>
+            
+        </div>
+
+    </div> 
+
+    
+    {% include 'includes/_edit_point.html' %}
+
+    {% endblock %}
+
+</body>
+{% block scripts %}
+  {{super()}}
+<script>
+    window.onload = function(){
+    }
+  </script>
+{% endblock %}

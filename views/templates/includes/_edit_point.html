@@ -1,0 +1,120 @@
+{% if point and session['user_id'] %}
+<div class="modal fade" id="editPointModal" tabindex="-1" role="dialog" aria-labelledby="editPointModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="editPointModalLabel">Edit {{point.k_name}} Point</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <form action="/update-point" enctype="multipart/form-data" method="POST">
+            <div class="form-group">
+                <label for="k-name" class="col-form-label">Name:</label>
+                <input type="text" class="form-control form-control-sm" id="k-name" name="k_name" 
+                    value="{{point.k_name}}" required>
+            </div>
+            {% if session['user_id'] %} 
+                <input type="number" class="form-control form-control-sm" id="k-created_by" 
+                    value="{{session['user_id']}}" name="k_created_by" hidden required>
+                <input type="number" class="form-control form-control-sm"
+                    value="{{point.id}}" name="id" hidden required>
+            {% endif %}
+            <div class="form-group">
+                <label for="k-description" class="col-form-label">Description:</label>
+                <textarea class="form-control form-control-sm" id="k-description" name="k_description"
+                    pattern=".+{,5}" maxlength="150" rows="2" required
+                    placeholder="{{point.k_description}}" >{{point.k_description}}</textarea>
+            </div>
+            <div class="form-group multline-group">
+                    <label class="col-form-label font-weight-normal">UTM :</label> 
+            </div>
+            {% set k_utm_n,k_utm_e,k_utm_h = point.k_utm.split(',') %}
+            <div class="form-row">
+                    <div class="col-md-4 mb-4">
+                          <input type="number" class="form-control form-control-sm" id="k-utm-n" 
+                            name="k_utm_n" placeholder="N" maxlength="6" required
+                            value="{{k_utm_n}}">
+                    </div>
+                    <div class="col-md-4 mb-4">
+                            <input type="number" class="form-control form-control-sm" id="k-utm-e" 
+                              name="k_utm_e" placeholder="E" maxlength="6" required
+                              value="{{k_utm_e}}">
+                      </div>
+                    <div class="col-md-4 mb-4">
+                          <input type="number" class="form-control form-control-sm" id="k-utm-h" 
+                            name="k_utm_h" placeholder="H" maxlength="6" required
+                            value="{{k_utm_h}}">
+                    </div>
+            </div>                
+            <div class="form-group multline-group">
+                    <label for="k-district" class="col-form-label">Address Name:</label>
+            </div>
+            <div class="form-row">
+                        <div class="col-md-4 mb-4">
+                          <input type="text" class="form-control form-control-sm" id="k-addr-district" 
+                            name="k_addr_district" placeholder="district" maxlength="25" required
+                            value="{{point.k_addr_district}}">
+                        </div>
+                        <div class="col-md-4 mb-4"> 
+                          <input type="text" class="form-control form-control-sm" id="k-addr-county" 
+                            name="k_addr_county" placeholder="county" maxlength="15" required
+                            value="{{point.k_addr_county}}">
+                        </div>
+                        <div class="col-md-4 mb-4">
+                          <input type="text" class="form-control form-control-sm" id="k-addr-subcounty" 
+                            name="k_addr_subcounty" placeholder="sub county" maxlength="15" required
+                            value="{{point.k_addr_subcounty}}">
+                        </div>
+            </div>
+            {% set lat,lng = point.k_geocord.split(',') %}
+            <div class="form-row">
+                    <div class="col-md-6 mb-6">
+                      <label for="k-geo-lat" class="font-weight-light">Latitude</label>
+                      <input type="number" class="form-control form-control-sm" id="k-geo-lat" 
+                        name="k_geo_lat" placeholder="lat" required step="any"
+                        value="{{lat}}">
+                    </div>
+                    <div class="col-md-6 mb-6">
+                      <label for="k-geo-lng" class="font-weight-light">Longitude</label>
+                      <input type="number" class="form-control form-control-sm" id="k-geo-lng" 
+                        name="k_geo_lng" placeholder="lng"  required step="any"
+                        value="{{lng}}">
+                    </div>
+            </div>
+            <div class="form-group multline-group">
+                <label class="col-form-label font-weight-normal">Technology :</label> 
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                        <select id="k-method-fixation" class="form-control" name="k_method_of_fixation">
+                          <option >Fixation Method</option>
+                          <option value="gps" selected>GPS</option>
+                        </select>
+                </div>                    
+                <div class="form-group col-md-6">
+                        <select id="k-equip-used" class="form-control" name="k_equip_used">
+                          <option selected value=''>Choose Equipment Used</option>
+                          <option value="wild_gps" selected>Wild GPS System</option>
+                        </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update Point</button>
+        </div>
+    </form>
+    </div>
+    </div>
+</div> 
+
+<script>
+    bootstrapValidate(['#k-name'], 'min:6:Enter at least 6 characters!')
+    bootstrapValidate(['#k-description'], 'min:15:Enter at least 15 characters!')
+    bootstrapValidate(['#k-addr-district','#k-addr-county','#k-addr-subcounty'],'required: Atleast 3 characters acceptable')
+    bootstrapValidate(['#k-utm-n','#k-utm-e','#k-utm-h'],'numeric:Only Numbers accepted')
+</script> 
+
+{% endif %}
