@@ -12,7 +12,9 @@
                 <div class="form-group">
                     <label for="s-k-name" class="col-form-label">Control Point Name :</label>
                     <input type="text" class="form-control form-control-sm" id="s-k-name" 
-                        placeholder="Enter Control Point Name" maxlength="12" required>
+                        placeholder="Enter Control Point Name"
+                        list="point-list" required>
+                    <datalist id='point-list'></datalist>
                 </div>           
             </div>
             <div class="modal-footer">
@@ -25,5 +27,22 @@
     </div> 
     
     <script>
-        bootstrapValidate(['#s-k-name'], 'min:8:Enter at least 8 characters control name!')
+        
+        function generatePointName(){ 
+
+            $.getJSON('/all-points', function(data) {     
+                if(!$.isEmptyObject(data)) {
+                    var sel = document.getElementById('point-list');
+                    data.forEach(element => {
+                        
+                        var opt = document.createElement('option');
+                        opt.appendChild( document.createTextNode(element.k_name) );
+                        opt.value = element.k_name; 
+                        sel.appendChild(opt); 
+                    });
+                }
+            });
+        }
+        generatePointName()
+        
     </script> 

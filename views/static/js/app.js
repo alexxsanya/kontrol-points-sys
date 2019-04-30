@@ -14,7 +14,7 @@ function searchPoint(){
         alert("Invalid Control Point Name");
     }else{
 
-        $.getJSON('points/'+k_name, function(data) {     
+        $.getJSON('point/'+k_name, function(data) {     
             
             if(!$.isEmptyObject(data)) {
                         
@@ -33,7 +33,7 @@ function searchPoint(){
                     position: latLng,
                     map: map,
                     title: data.k_name,	
-                    icon:'/static/assets/pin.png'
+                    icon:`/static/assets/${data.k_status}.png`
                 });
                 var clicker = addClicker(marker, data);
             }else{
@@ -68,6 +68,10 @@ function searchPoint(){
 
       });
     }
+}
+
+radiusToZoom = function (radius){
+    return Math.round(14-Math.log(radius)/Math.LN2);
 }
 
 function App() {

@@ -21,6 +21,8 @@ function loadControlMap(){
         navigator.geolocation.watchPosition(getPosition);
         console.log(lat)
     } 
+    
+    navigator.geolocation.watchPosition(getPosition);
     var style = [
         {
           "featureType": "administrative",
@@ -108,7 +110,59 @@ function loadControlMap(){
       mapTypeId:'roadmap',
       styles:style,
     });
-    
+
+    var card = document.getElementById('pac-card');
+    var input = document.getElementById('pac-input');
+
+    map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+    autocomplete.bindTo('bounds', map);
+
+    autocomplete.setFields(
+        ['address_components', 'geometry', 'icon', 'name']);
+
+    var infowindow = new google.maps.InfoWindow();
+    var infowindowContent = document.getElementById('infowindow-content');
+    infowindow.setContent(infowindowContent);
+    var marker = new google.maps.Marker({
+      map: map,
+      anchorPoint: new google.maps.Point(0, -29)
+    });
+
+    autocomplete.addListener('place_changed', function() {
+      infowindow.close();
+      marker.setVisible(false);
+      var place = autocomplete.getPlace();
+      if (!place.geometry) {
+        window.alert("No details available for input: '" + place.name + "'");
+        return;
+      }
+      if (place.geometry.viewport) {
+        map.fitBounds(place.geometry.viewport);
+      } else {
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);  // Why 17? Because it looks good.
+      }
+      marker.setPosition(place.geometry.location);
+      marker.setVisible(true);
+      /*
+      var address = '';
+      if (place.address_components) {
+        address = [
+          (place.address_components[0] && place.address_components[0].short_name || ''),
+          (place.address_components[1] && place.address_components[1].short_name || ''),
+          (place.address_components[2] && place.address_components[2].short_name || '')
+        ].join(' ');
+      }
+
+      infowindowContent.children['place-icon'].src = place.icon;
+      infowindowContent.children['place-name'].textContent = place.name;
+      infowindowContent.children['place-address'].textContent = address;
+      infowindow.open(map, marker);*/
+    });
+
     var marker = new google.maps.Marker({
       position: myCurrentPosition, 
       map: map,
@@ -140,7 +194,7 @@ function loadControlMap(){
                 position: latLng,
                 map: map,
                 title: data.k_name,	
-                icon:'/static/assets/pin.png'
+                icon:`/static/assets/${data.k_status}.png`
             });
   
           var clicker = addClicker(marker, data);
@@ -160,7 +214,6 @@ function loadControlMap(){
                       "<p> <b>Address  </b>   : "+content.k_addr_subcounty+", "+
                         content.k_addr_county+", "+content.k_addr_district+
                       "</p>"+
-                      "<a href='/point/review/"+content.id+"' >see reviews</a>"+
                       "<hr />"+
                       "<div style='margin:5px 5px'>"+
                         "<button onclick='get_direction()' data='"+
@@ -187,6 +240,8 @@ function calculateRoute(to) {
         navigator.geolocation.watchPosition(getPosition);
         console.log(lat)
     }  
+    
+    navigator.geolocation.watchPosition(getPosition);
     var myCurrentPosition = new google.maps.LatLng(lat, lng);    
     var myOptions = {
       zoom: 13,

@@ -58,7 +58,7 @@ def create_user():
 def login_user():
     user = request.form.to_dict(flat=True)  
 
-    user = UserModel.get_user_by_email(user.get('l_email'))    
+    user = UserModel.login_user(user.get('l_email'),user.get('l_password'))    
     
     user = UserModelSchema().dump(user).data  
 
@@ -154,10 +154,39 @@ def get_points(point_name):
 
     data = KontrolsModelSchema().dump(kontrols).data 
 
-    reviews = ReviewsModel.get_review_of(data.get('id'))
+    reviews = ReviewsModel.get_kontrol_reviews(data.get('id'))
     review_data = ReviewsModelSchema().dump(reviews, many=True).data 
     #return jsonify(data)
     return render_template("point.html",point=data,reviews=review_data)
+
+@app.route('/point/<string:point_name>')
+def get_point_details(point_name):
+    kontrols =  KontrolsModel.get_kontol_by_name(point_name) 
+
+    if not kontrols:
+        print("--->{}".format(kontrols))
+        return jsonify({}) # Using 413 in place of 204 No Content Found
+
+    data = KontrolsModelSchema().dump(kontrols).data 
+
+    return jsonify(data)
+
+@app.route('/point/<int:point_id>')
+def get_point_details_by_id(point_id): 
+    kontrols =  KontrolsModel.get_one_kontrol(point_id) 
+
+    if not kontrols:
+        
+        print("--->{}".format(kontrols))
+        return jsonify({}) # Using 413 in place of 204 No Content Found
+
+    data = KontrolsModelSchema().dump(kontrols).data 
+
+    reviews = ReviewsModel.get_kontrol_reviews(point_id)
+    review_data = ReviewsModelSchema().dump(reviews, many=True).data 
+    #return jsonify(data)
+    return render_template("point.html",point=data,reviews=review_data)
+
 
 @app.route('/assets/<img_uri>')
 def get_photo(img_uri): 
@@ -190,12 +219,27 @@ def add_review():
     flash(message,'success')        
     return redirect(url_for('home'))
 
-@app.route('/point/reviews/<int:id>',methods=['GET'])
-def get_point_reviews(id):
-    reviews = ReviewsModel.get_review_of(id)
+@app.route('/points/reviews',methods=['GET'])
+def get_point_reviews():
+    user_id = session['user_id']
+    reviews = ReviewsModel.get_review_of(user_id)
     data = ReviewsModelSchema().dump(reviews, many=True).data 
 
     return render_template("reviews.html",reviews=data)
+
+
+@app.route('/profile',methods=['GET'])
+def get_my_profile():
+    user_id = session['user_id']
+    reviews = ReviewsModel.get_review_of(user_id)
+    data = ReviewsModelSchema().dump(reviews, many=True).data 
+
+    kontrols =  KontrolsModel.get_kontol_by_user(user_id) 
+    points = KontrolsModelSchema().dump(kontrols, many=True).data 
+
+    return render_template("profile.html",points=points, reviews=data)
+
+
 
 @app.errorhandler(401)
 def error_401(error):

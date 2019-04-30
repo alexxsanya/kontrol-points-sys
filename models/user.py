@@ -52,6 +52,10 @@ class UserModel(db.Model):
     @staticmethod
     def get_user_by_email(email): 
         return UserModel.query.filter_by(u_email=email).first()
+
+    @staticmethod
+    def login_user(email,password):
+        return UserModel.query.filter_by(u_email=email,u_password=password).first()
     def __repr__(self):
         return '<id {}>'.format(self.id)
 

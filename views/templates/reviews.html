@@ -3,46 +3,63 @@
 
 {% block body %} 
     {{super()}}
-    <div class="row" style="margin:20px auto;padding:10px;">
-        <div class="col-sm-12" >
-            {%if reviews %} 
-                {% for review in reviews %}
-                <div class="card" style="width: 18rem;float:left;margin:0 5px;">
-                        <img class="card-img-top" src="/assets/{{review.kontrol_foto}}" 
-                            alt="Card image cap" style="padding: 10px;">
-                        <div class="card-body">
-                            {%if review.kontrol_condition=='good' %}
-                            <span class="badge badge-primary">{{review.kontrol_condition|title}}</span>
-                            {%endif%}
-                            {%if review.kontrol_condition=='poor' %}
-                            <span class="badge badge-warning">{{review.kontrol_condition|title}}</span>
-                            {%endif%}
-                            {%if review.kontrol_condition=='demolished' %}
-                            <span class="badge badge-danger">{{review.kontrol_condition|title}}</span>
-                            {%endif%}<br/>
-                            <p class="card-text">
-                                    {{review.review_details|title|truncate(200)}}
-                            </p>
-                            <p class="card-text">
-                                <small class="text-muted">
-                                    Created on {{review.created_at|truncate(13)}}
-                                </small>
-                            </p>
-                        </div>
+    <br >
+    <div class="container padding">
+        <div class="row">
+            <div class="col-12 col-md-12">
+                <nav class="navbar navbar-light bg-light">                        
+                    <div>
+                        <span class="navbar-text">
+                            My Control Point Reviews
+                        </span>
                     </div>
-                {% endfor %}
-            {% endif %}
-            {%if reviews == [] %} 
-            <div class="jumbotron jumbotron-fluid">
-                <div class="container">
-                <h1 class="display-4">No Reviews</h1>
-                <p class="lead">Currently this point has not been reviewed</p>
-                </div>
+                </nav>
             </div>
-            {% endif %}
         </div>
-            
+        <br>
+        <div class="row">
+                    <div class="col-sm-12" >
+                        {%if reviews %} 
+                            {% for review in reviews %}
+                            <div class="card" style="width: 18rem;float:left;margin:0 5px;">
+                                    <img class="card-img-top" src="/assets/{{review.kontrol_foto}}" 
+                                        alt="Card image cap" style="padding: 10px;height: 20vh;">
+                                    <div class="card-body">
+                                        {%if review.kontrol_condition=='good' %}
+                                        <span class="badge badge-primary">{{review.kontrol_condition|title}}</span>
+                                        {%endif%}
+                                        {%if review.kontrol_condition=='poor' %}
+                                        <span class="badge badge-warning">{{review.kontrol_condition|title}}</span>
+                                        {%endif%}
+                                        {%if review.kontrol_condition=='demolished' %}
+                                        <span class="badge badge-danger">{{review.kontrol_condition|title}}</span>
+                                        {%endif%}<br/>
+                                        <p class="card-text">
+                                                {{review.review_details|title|truncate(200)}}
+                                        </p>
+                                        <a href="/point/{{review.kontrol_id}}">View Control Point</a>
+                                        <p class="card-text">
+                                            <small class="text-muted">
+                                                Created on {{review.created_at|truncate(13)}}
+                                            </small>
+                                        </p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        {%if reviews == [] %} 
+                        <div class="jumbotron jumbotron-fluid">
+                            <div class="container">
+                            <h1 class="display-4">No Reviews</h1>
+                            <p class="lead">Currently you Have not made any reviews</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                        
+        </div>
     </div>
+
         
 {% endblock %}
 {% block scripts %}

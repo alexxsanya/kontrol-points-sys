@@ -19,6 +19,7 @@ class KontrolsModel(db.Model):
   k_equip_used = db.Column(db.String(50), nullable=False)
   k_surveyor = db.Column(db.String(50), nullable=True)
   k_description = db.Column(db.Text,nullable=False)
+  k_status = db.Column(db.String(25))
   created_at = db.Column(db.DateTime)
   modified_at = db.Column(db.DateTime)
   user_id = db.Column(db.Integer(), db.ForeignKey('users.u_id'))
@@ -36,6 +37,7 @@ class KontrolsModel(db.Model):
     self.k_equip_used = data.get('k_equip_used') 
     self.k_surveyor = data.get('k_surveyor') 
     self.k_description = data.get('k_description') 
+    self.k_status = data.get('k_status') 
     self.created_at = datetime.datetime.utcnow()
     self.modified_at = datetime.datetime.utcnow()
 
@@ -64,6 +66,10 @@ class KontrolsModel(db.Model):
   def get_kontol_by_name(name):
     return KontrolsModel.query.filter_by(k_name=name).first()
 
+  @staticmethod
+  def get_kontol_by_user(user_id):
+    return KontrolsModel.query.filter_by(user_id=user_id)
+
   def __repr__(self):
     return '<id {}>'.format(self.id)
 
@@ -82,6 +88,7 @@ class KontrolsModelSchema(Schema):
   k_equip_used = fields.Str(required=True)
   k_surveyor = fields.Str()
   k_description = fields.Str(required=True)
+  k_status = fields.Str()
   created_at = fields.DateTime(dump_only=True) 
   modified_at = fields.DateTime(dump_only=True) 
   user_id = fields.Int(required=True)

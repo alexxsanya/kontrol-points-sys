@@ -22,8 +22,17 @@
                     <textarea class="form-control form-control-sm" id="k-description" name="k_description"
                         pattern=".+{,5}" maxlength="150" rows="2" required></textarea>
                 </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                            <select id="k-status" class="form-control" name="k_status">
+                              <option value="good"selected>Good Condition</option>
+                              <option value="poor">Poor Condition</option>
+                              <option value="demolished">Demolished</option>
+                            </select>
+                    </div> 
+                </div>
                 <div class="form-group multline-group">
-                        <label class="col-form-label font-weight-normal">UTM :</label> 
+                        <label class="col-form-label font-weight-normal">Arc 1960 / UTM zone 36N :</label> 
                 </div>
                 <div class="form-row">
                         <div class="col-md-4 mb-4">
@@ -76,13 +85,22 @@
                             <select id="k-method-fixation" class="form-control" name="k_method_of_fixation">
                               <option selected>Fixation Method</option>
                               <option value="gps">GPS</option>
+                              <option value="traversing">Traversing</option>
+                              <option value="triangulation">Triangulation</option>
+                              <option value="trilateration">Trilateration</option>
+                              <option value="photogrammetry">Photogrammetry</option>
                             </select>
                     </div>                    
-                    <div class="form-group col-md-6">
+                    <!--div class="form-group col-md-6">
                             <select id="k-equip-used" class="form-control" name="k_equip_used">
                               <option selected value=''>Choose Equipment Used</option>
                               <option value="wild_gps">Wild GPS System</option>
                             </select>
+                    </div -->
+                    <div class="form-group">
+                        <label for="k-equip-used" class="col-form-label">Choose Equipment Used:</label>
+                        <input type="text" class="form-control form-control-sm" 
+                            id="k-equip-used" name="k_equip_used" required>
                     </div>
                 </div>
             </div>

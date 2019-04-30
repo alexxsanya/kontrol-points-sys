@@ -48,8 +48,13 @@ class ReviewsModel(db.Model):
         return ReviewsModel.query.get(id)
 
     @staticmethod
-    def get_review_of(kontrol_id):
+    def get_review_of(user_id):
+        return ReviewsModel.query.filter_by(user_id=user_id).all()
+
+    @staticmethod
+    def get_kontrol_reviews(kontrol_id):
         return ReviewsModel.query.filter_by(kontrol_id=kontrol_id).all()
+
 
     def __repr__(self):
         return '<id {}>'.format(self.id)

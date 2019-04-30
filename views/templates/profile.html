@@ -1,9 +1,5 @@
 {% extends "layout.html" %}
 
-{% block styles %}
-{{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='css/route.css')}}">  
-{% endblock %} 
 <body>
     {% block body %} 
     {{super()}}
@@ -14,15 +10,9 @@
                 <nav class="navbar navbar-light bg-light">                        
                     <div>
                         <span class="navbar-text">
-                            Control Point Name <strong>{{point.k_name }}</strong>
+                            My Profile
                         </span>
                     </div>
-                    {% if session['user_id'] == point.user_id%}
-                    <form action="#" class="form-inline my-2 my-lg-0">
-                        <button class="btn btn-outline-primary my-2 my-sm-0" data-toggle="modal" data-target="#editPointModal" 
-                            type="button">EDIT</button> &nbsp;
-                    </form>
-                    {% endif %}
                 </nav>
             </div>
         </div>
@@ -31,36 +21,36 @@
 
             <div class="col-6 col-md-5">
                 
-                <div class="jumbotron">
-                        <h1 class="display-4">{{point.k_name}}</h1>
-                        <p> {{point.k_addr_district}} - 
-                            {{point.k_addr_county}} - 
-                            {{point.k_addr_subcounty}}
-                        </p>
-                        <hr class="my-4">
-                        <p class="lead">{{ point.k_description }} </p>
-                        <hr class="my-4">
-                        {% set utm = point.k_utm.strip().split(',') %}
-                        <button type="button" class="btn btn-outline-primary">N:{{utm[0]}}</button>
-                        <button type="button" class="btn btn-outline-secondary">E:{{utm[1]}}</button>
-                        <button type="button" class="btn btn-outline-success">H:{{utm[2]}}</button>
-                  </div>
-
-                <div class="row align-items-end">
-                        <div class="col">
-                            <span class="badge badge-secondary">
-                                {{point.k_method_of_fixation}}
-                            </span>
-                            <span class="badge badge-secondary">
-                                {{point.k_equip_used}}
-                            </span> 
-                        </div>
+                <h5><u>My Added Points</u></h5>
+                <div style="height:600px;margin-top:15px;overflow-x: hidden;
+                overflow-y: auto;">         
+                    <ul class="list-group">
+                        {% for point in points %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col col-9">
+                                        <p>
+                                            Name : <a href="points/{{point.k_name}}">{{point.k_name}}</a> 
+                                            <br><small>
+                                                Address : {{point.k_addr_district}} -
+                                                {{point.k_addr_county}} - {{point.k_addr_subcounty}}
+                                            </small>
+                                        </p>
+                                        
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %} 
+                        {% if points|length < 1 %}
+                            You have not added point to the system
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
             <div class="col-12 col-md-7">
-                <h5><u>Control Point Reviews</u></h5>
+                <h5><u>My Reviews</u></h5>
                 <div class="col-12" style="padding-left: 0px;">  
-                    <div style="height:300px;margin-top:15px;overflow-x: hidden;
+                    <div style="height:600px;margin-top:15px;overflow-x: hidden;
                     overflow-y: auto;">         
                         <ul class="list-group">
                             {% for review in reviews %}
@@ -87,7 +77,9 @@
                                         </div>
                                         <div class="col col-9">
                                             <p>
-                                                {{review.review_details}}
+                                                <a href="point/{{review.kontrol_id}}">
+                                                    {{review.review_details}}
+                                                </a>
                                                 <br><small>reviewed on : {{review.created_at}}</small>
                                             </p>
                                             
